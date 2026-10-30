@@ -14,6 +14,7 @@ android.permissions = INTERNET,POST_NOTIFICATIONS,FOREGROUND_SERVICE,WAKE_LOCK,R
 android.api = 33
 android.accept_sdk_license = True
 android.build_tools_version = 34.0.0
+android.ndk = 25b
 android.minapi = 24
 services = Hoh:service_main.py:foreground:sticky
 android.archs = arm64-v8a

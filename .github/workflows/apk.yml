@@ -19,7 +19,14 @@ jobs:
       - name: Install buildozer
         run: pip install --upgrade pip "cython<3" buildozer
       - name: Build APK
-        run: buildozer -v android debug
+        run: |
+          set -o pipefail
+          buildozer -v android debug 2>&1 | tee build.log
+      - name: Tampilkan error
+        if: failure()
+        run: |
+          grep -nE -i "error|failed|fatal|undefined reference|not found|No such" build.log | grep -v "^.*# " | tail -25 | while IFS= read -r l; do echo "::error::${l:0:400}"; done
+          tail -30 build.log | while IFS= read -r l; do echo "::warning::${l:0:400}"; done
       - uses: actions/upload-artifact@v4
         with:
           name: HOH-apk
