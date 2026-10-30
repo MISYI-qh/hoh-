@@ -6,7 +6,7 @@ source.dir = .
 source.include_exts = py,html,json,svg,png,hh,jsonl,wav
 source.exclude_dirs = tests,bin,.buildozer,hoh_home
 version = 1.2.0
-requirements = python3,numpy==1.26.4,pyjnius,android
+requirements = python3,numpy==v1.26.4,pyjnius,android
 icon.filename = %(source.dir)s/icon.png
 presplash.filename = %(source.dir)s/presplash.png
 orientation = portrait
