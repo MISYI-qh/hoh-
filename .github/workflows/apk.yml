@@ -27,7 +27,7 @@ jobs:
         run: |
           sed 's/\x1b\[[0-9;]*m//g' build.log > clean.log
           n=$(grep -n "No setup.py/pyproject.toml used" clean.log | tail -1 | cut -d: -f1)
-          msg=$(sed -n "$((n+1)),\$p" clean.log | grep -v -E "^#     |gcc|adding:|Compiling" | cut -c1-240 | head -n 70 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+          msg=$(sed -n "$((n-60)),$((n+1))p" clean.log | grep -v -E "^#     |gcc|adding:|Compiling" | cut -c1-240 | head -n 70 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
           echo "::error title=BUILD-LOG::${msg}"
       - uses: actions/upload-artifact@v4
         with:
