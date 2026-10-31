@@ -26,9 +26,9 @@ jobs:
         if: failure()
         run: |
           sed 's/\x1b\[[0-9;]*m//g' build.log > clean.log
-          n=$(grep -n "Buildozer failed to execute" clean.log | head -1 | cut -d: -f1)
-          s=$((n-70)); [ $s -lt 1 ] && s=1
-          msg=$(sed -n "${s},${n}p" clean.log | grep -v "^#     " | cut -c1-220 | head -70 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+          wc -l clean.log
+          msg=$(grep -n -i -B3 -A12 -E "what went wrong|Execution failed|Traceback|BUILD FAILED|FAILURE:|Exception|No such file|cannot find" clean.log | cut -c1-200 | head -80 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+          [ -z "$msg" ] && msg=$(tail -n 400 clean.log | grep -v "^#     " | head -n 60 | cut -c1-200 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
           echo "::error title=BUILD-LOG::${msg}"
       - uses: actions/upload-artifact@v4
         with:
