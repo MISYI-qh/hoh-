@@ -27,8 +27,9 @@ jobs:
         run: |
           sed 's/\x1b\[[0-9;]*m//g' build.log > clean.log
           n=$(grep -n "Buildozer failed to execute" clean.log | head -1 | cut -d: -f1)
-          s=$((n>0 ? n-130 : 1)); [ $s -lt 1 ] && s=1
-          sed -n "${s},$((n>0 ? n : 130))p" clean.log | grep -v "^#     " | while IFS= read -r l; do echo "::error::${l:0:300}"; done
+          s=$((n-70)); [ $s -lt 1 ] && s=1
+          msg=$(sed -n "${s},${n}p" clean.log | grep -v "^#     " | cut -c1-220 | head -70 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+          echo "::error title=BUILD-LOG::${msg}"
       - uses: actions/upload-artifact@v4
         with:
           name: HOH-apk
