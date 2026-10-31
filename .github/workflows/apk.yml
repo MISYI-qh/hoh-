@@ -19,7 +19,11 @@ jobs:
       - name: Install buildozer
         run: pip install --upgrade pip "cython<3" buildozer
       - name: Build APK
+        env:
+          JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         run: |
+          export PATH="$JAVA_HOME/bin:$PATH"
+          java -version
           set -o pipefail
           buildozer -v android debug 2>&1 | tee build.log
       - name: Tampilkan error
